@@ -15,7 +15,7 @@ class API {
         static let apiSecret = "dfdf613c8c7e27bf"
         static let base = "www.flickr.com/services/rest"
         static let method = "flickr.photos.search"
-        static let perpage = 10
+        static let perpage = 12
         
     }
     

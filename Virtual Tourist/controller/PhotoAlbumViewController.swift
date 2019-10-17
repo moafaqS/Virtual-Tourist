@@ -51,8 +51,13 @@ class PhotoAlbumViewController: UIViewController , MKMapViewDelegate  , UICollec
      
 
     @IBAction func newCollectionPressed(_ sender: Any) {
- 
-        let number = Int.random(in: 1..<Int(pin.totalPages))
+        var number = 0
+        if pin.totalPages == 1 {
+            number = 1
+        }else{
+            number = Int.random(in: 1..<Int(pin.totalPages))
+        }
+       
         
         API.getPhotoes(latitude: pin.latitude, longitude: pin.longitude, page: number) { (photos, error) in
             if error == nil{
