@@ -42,10 +42,7 @@ class API {
 
     }
 
-   
-    
-   
-    
+ 
     static func getPhotoes(latitude : Double , longitude : Double , page : Int , completionHandler : @escaping (Photos?,Error?) -> Void){
         
         let url = constructUrl(latitude: latitude, longitude: longitude, page: page)
@@ -53,7 +50,7 @@ class API {
         let session = URLSession.shared
         let task = session.dataTask(with: request) { (data, response, error) in
             
-            if error != nil { // Handle error…
+            if error != nil {
                 completionHandler(nil,error)
                 return
             }

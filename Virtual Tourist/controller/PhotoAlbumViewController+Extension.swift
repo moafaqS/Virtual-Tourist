@@ -13,7 +13,7 @@ import CoreData
 extension PhotoAlbumViewController{
     
     
-    fileprivate func requestData() {
+    func requestData() {
            let fetchResquest : NSFetchRequest<Photo> = Photo.fetchRequest()
            let predicate = NSPredicate(format: "pin == %@", pin)
            fetchResquest.predicate = predicate
@@ -57,13 +57,16 @@ extension PhotoAlbumViewController{
                  let urlString = "https://farm\(item.farm).staticflickr.com/\(item.server)/\(item.id)_\(item.secret).jpg"
                  let imgUrl = URL(string: urlString)
                  print(imgUrl)
-                 downloadImage(from: imgUrl!)
+                 imagesURL.append(imgUrl!)
                  
              }
+              DispatchQueue.main.async() {
+             self.collectionView.reloadData()
+            }
          }
          
          
-         func downloadImage(from url: URL) {
+    func downloadImage(from url: URL , complation : @escaping (Data) -> Void) {
              API.getImage(from: url) { data, response, error in
                  guard let data = data, error == nil else {
                      print(error?.localizedDescription)
@@ -78,9 +81,11 @@ extension PhotoAlbumViewController{
                      photo.pin = self.pin
                      try? self.dataController.viewContext.save()
                      self.photoes.append(photo)
-                     self.collectionView.reloadData()
                      self.newCollectionButton.isEnabled = true
+                    
                  }
+                
+                complation(data)
              }
          }
 

@@ -22,6 +22,7 @@ class PhotoAlbumViewController: UIViewController , MKMapViewDelegate  , UICollec
     var pin : Pin!
     var photoes : [Photo] = []
     var selectedItemToDelete = [Photo]()
+    var imagesURL = [URL]()
     
     
     override func viewDidLoad() {
@@ -59,6 +60,7 @@ class PhotoAlbumViewController: UIViewController , MKMapViewDelegate  , UICollec
                     self.RemoveImege(img: item)
                 }
                 self.photoes.removeAll()
+                self.imagesURL.removeAll()
                 self.createPhotosURLS(object: photos!)
             }else{
                 print(error?.localizedDescription)
@@ -93,12 +95,12 @@ class PhotoAlbumViewController: UIViewController , MKMapViewDelegate  , UICollec
     
         }
         deleteButton.isHidden = true
-        if photoes.count == 0 {
-                   newCollectionButton.isEnabled = true
+        newCollectionButton.isEnabled = true
+
+        if selectedItemToDelete.count != photoes.count{
+            collectionView.reloadData()
         }
-               
-        
-        collectionView.reloadData()
+       
 
         
     }
@@ -109,13 +111,33 @@ class PhotoAlbumViewController: UIViewController , MKMapViewDelegate  , UICollec
 extension PhotoAlbumViewController{
     
        func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-           noImagesLabel.isHidden = photoes.count == 0 ? false : true
-           return photoes.count
+           
+           let count = photoes.count == 0 ? imagesURL.count : photoes.count
+            noImagesLabel.isHidden = count == 0 ? false : true
+           return count
        }
        
        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! PhotoViewCell
-               cell.photo.image = UIImage(data: self.photoes[indexPath.row].image!)
+    
+       
+        
+        if photoes.count == 0{
+            cell.indicator.startAnimating()
+            downloadImage(from: imagesURL[indexPath.row], complation: { (data) in
+                       DispatchQueue.main.async {
+                            cell.photo.image = UIImage(data: data)
+                        cell.indicator.stopAnimating()
+                        cell.indicator.isHidden = true
+                        
+                       }
+                      
+                   })
+        }else{
+            cell.photo.image = UIImage(data: self.photoes[indexPath.row].image!)
+        }
+       
+               
                cell.layer.borderWidth = 2.0
                cell.layer.borderColor = UIColor.black.cgColor
            return cell

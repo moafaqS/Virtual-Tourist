@@ -102,6 +102,13 @@ class MapViewController: UIViewController , MKMapViewDelegate {
     @IBAction func EditButtonPressed(_ sender: Any) {
         labelEdit.isHidden = edit
         edit = !edit
+        if edit{
+             EditButton.setTitle("OK" , for: .normal)
+        }else{
+             EditButton.setTitle("Edit" , for: .normal)
+        }
+       
+      
     }
     
     

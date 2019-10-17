@@ -38,7 +38,7 @@
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap at pin to delete" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Von-hM-0ER">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="100"/>
-                                <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="S90-uT-QdD"/>
                                 </constraints>
@@ -115,6 +115,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="115" height="116"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="FPT-cr-PfW">
+                                                    <rect key="frame" x="0.0" y="0.0" width="115" height="116"/>
+                                                </activityIndicatorView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jSI-EN-UZW">
                                                     <rect key="frame" x="5" y="5" width="105" height="106"/>
                                                     <constraints>
@@ -126,12 +129,17 @@
                                             <constraints>
                                                 <constraint firstItem="jSI-EN-UZW" firstAttribute="leading" secondItem="Grm-RN-D9o" secondAttribute="leading" constant="5" id="HYp-gd-j2R"/>
                                                 <constraint firstAttribute="trailing" secondItem="jSI-EN-UZW" secondAttribute="trailing" constant="5" id="KPe-Ef-SnD"/>
+                                                <constraint firstItem="FPT-cr-PfW" firstAttribute="top" secondItem="Grm-RN-D9o" secondAttribute="top" id="PLH-10-WWA"/>
+                                                <constraint firstItem="FPT-cr-PfW" firstAttribute="leading" secondItem="Grm-RN-D9o" secondAttribute="leading" id="UbH-Wz-Fgz"/>
+                                                <constraint firstAttribute="trailing" secondItem="FPT-cr-PfW" secondAttribute="trailing" id="Vrw-39-3NE"/>
                                                 <constraint firstAttribute="bottom" secondItem="jSI-EN-UZW" secondAttribute="bottom" constant="5" id="em7-eu-imK"/>
                                                 <constraint firstItem="jSI-EN-UZW" firstAttribute="top" secondItem="Grm-RN-D9o" secondAttribute="top" constant="5" id="neE-qT-pYz"/>
+                                                <constraint firstAttribute="bottom" secondItem="FPT-cr-PfW" secondAttribute="bottom" id="s04-f6-iOK"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="115" height="116"/>
                                         <connections>
+                                            <outlet property="indicator" destination="FPT-cr-PfW" id="SW4-Ae-UeZ"/>
                                             <outlet property="photo" destination="jSI-EN-UZW" id="Y1X-o7-XZe"/>
                                         </connections>
                                     </collectionViewCell>
