@@ -51,6 +51,7 @@ class PhotoAlbumViewController: UIViewController , MKMapViewDelegate  , UICollec
      
 
     @IBAction func newCollectionPressed(_ sender: Any) {
+        newCollectionButton.isEnabled = false
         var number = 0
         if pin.totalPages == 1 {
             number = 1
@@ -70,7 +71,10 @@ class PhotoAlbumViewController: UIViewController , MKMapViewDelegate  , UICollec
             }else{
                 print(error?.localizedDescription)
             }
-
+            DispatchQueue.main.async() {
+                  self.newCollectionButton.isEnabled = true
+            }
+          
         }
 
     }
