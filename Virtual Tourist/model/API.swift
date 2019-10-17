@@ -32,7 +32,7 @@ class API {
         let lat = URLQueryItem(name: "lat", value: String(latitude))
         let lon = URLQueryItem(name: "lon", value: String(longitude))
         let perPage = URLQueryItem(name: "per_page", value: String(constants.perpage))
-        let page = URLQueryItem(name: "per_page", value: String(page))
+        let page = URLQueryItem(name: "page", value: String(page))
         
         
         

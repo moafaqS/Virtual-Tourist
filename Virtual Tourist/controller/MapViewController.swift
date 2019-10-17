@@ -25,24 +25,20 @@ class MapViewController: UIViewController , MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
-        
         dataController.load()
-        
         EditButton.layer.cornerRadius = 0.5 * EditButton.bounds.size.width
         labelEdit.isHidden = !edit
         
-        
+        let fetchResquest : NSFetchRequest<Pin> = Pin.fetchRequest()
+               if let results = try? dataController.viewContext.fetch(fetchResquest){
+                   pins = results
+                   loadPins()
+               }
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
-        let fetchResquest : NSFetchRequest<Pin> = Pin.fetchRequest()
-        
-        if let results = try? dataController.viewContext.fetch(fetchResquest){
-            pins = results
-            loadPins()
-        }
-
+        loadPins()
     }
     
     
@@ -72,28 +68,7 @@ class MapViewController: UIViewController , MKMapViewDelegate {
         
     }
     
-    
-      func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-          
-          let reuseId = "pin"
-          
-          var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
-          
-          if pinView == nil {
-              pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-              pinView!.canShowCallout = false
-              pinView!.pinTintColor = .red
-              pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-          }
-          else {
-              pinView!.annotation = annotation
-          }
-          
-          return pinView
-      }
-      
-    
-    
+
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         
         let selectedPin = pins.first { (pin) -> Bool in
@@ -105,6 +80,7 @@ class MapViewController: UIViewController , MKMapViewDelegate {
             dataController.viewContext.delete(selectedPin!)
             try? dataController.viewContext.save()
             mapView.removeAnnotation(view.annotation!)
+            
         }else{
             // perform segue
             performSegue(withIdentifier: "toPhotoViewController", sender: selectedPin)
@@ -114,8 +90,8 @@ class MapViewController: UIViewController , MKMapViewDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if segue.destination is PhotosViewController{
-            let vc = segue.destination as? PhotosViewController
+        if segue.destination is PhotoAlbumViewController{
+            let vc = segue.destination as? PhotoAlbumViewController
             vc!.pin = sender as? Pin
             vc?.dataController = dataController
         }
@@ -132,6 +108,11 @@ class MapViewController: UIViewController , MKMapViewDelegate {
     
     
     func loadPins(){
+        
+        // to avoid repetition of annotations
+        let allAnnotations = self.mapView.annotations
+        self.mapView.removeAnnotations(allAnnotations)
+        
         var annotations = [MKPointAnnotation]()
         for pin in pins{
             let annotation = MKPointAnnotation()
@@ -139,9 +120,7 @@ class MapViewController: UIViewController , MKMapViewDelegate {
             annotation.coordinate.longitude = pin.longitude
             annotations.append(annotation)
         }
-        
-        mapView.addAnnotations(annotations)
-       
+        self.mapView.addAnnotations(annotations)
     }
     
     
